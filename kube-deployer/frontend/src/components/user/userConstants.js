@@ -1,0 +1,3 @@
+export const USER_LOGGED = 'USER_LOGGED';
+export const USER_SEARCHED = 'USER_SEARCHED';
+export const USER_DOLOGOUT ='USER_DOLOGOUT';

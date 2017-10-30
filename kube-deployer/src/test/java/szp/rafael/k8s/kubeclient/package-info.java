@@ -1,0 +1,1 @@
+package szp.rafael.k8s.kubeclient;
