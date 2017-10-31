@@ -13,6 +13,7 @@
 
     <groupId>szp.rafael.k8s</groupId>
     <artifactId>hello</artifactId>
+    <packaging>war</packaging>
 
     <properties>
         <version.wildfly.swarm>2017.8.1</version.wildfly.swarm>
