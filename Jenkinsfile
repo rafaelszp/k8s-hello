@@ -1,27 +1,38 @@
 node {
+    def maven = tool 'mvn-3.5.2'
+    def mvn = "${maven}/bin/mvn"
+    
+    stage('Docker Info'){
+        echo "\n\n\nDisplaying version\n\n\n"
+        sh 'docker version'    
+    }
+    
+    stage('Maven Info'){
+        echo "\n\n\nDisplay maven version\n\n\n"
+        sh "${mvn} --version"        
+    }
+    
+    stage('pull and clean'){
+        try{
+            echo "Downloading the project"
+            git poll:true, branch: 'master', url: 'https://github.com/rafaelszp/k8s-hello.git'
+            sh "${mvn} clean"
+        }catch (Exception e){
+            //notifyFailure(e.getMessage())
+            echo e.getMessage()
+            throw e
 
-    checkout scm
+        }
+    }
+    
+    stage('BUILD'){
+        echo "Building project..."
+        try{
+            sh "${mvn} install -DskipTests"
 
-    env.DOCKER_API_VERSION="1.23"
-
-    sh "git rev-parse --short HEAD > commit-id"
-
-    tag = readFile('commit-id').replace("\n", "").replace("\r", "")
-    appName = "k8s-hello"
-    registryHost = "registry.default.svc.cluster.local:30400/"
-    imageName = "${registryHost}${appName}:${tag}"
-    env.BUILDIMG=imageName
-
-    stage "Build"
-
-    sh "docker build -t ${imageName} -f Dockerfile applications/hello-kenzan"
-
-    stage "Push"
-
-    sh "docker push ${imageName}"
-
-    stage "Deploy"
-
-    sh "sed 's#127.0.0.1:30400/hello-kenzan:latest#'$BUILDIMG'#' applications/hello-kenzan/k8s/deployment.yaml | kubectl apply -f -"
-    sh "kubectl rollout status deployment/hello-kenzan"
+        }catch(Exception error){
+            
+            throw error
+        }
+    }
 }
