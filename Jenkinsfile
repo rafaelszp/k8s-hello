@@ -44,7 +44,8 @@ node{
 
     stage('DockerBuild'){
         echo "\n\n\nBuilding docker image\n\n\n"
-        sh "docker build --tag rafaelszp/k8s-hello ."
+        def pom = readMavenPom file: 'pom.xml'
+        sh "docker build --tag rafaelszp/k8s-hello:${pom.version} ."
     }
 
     stage('DockerPush'){
