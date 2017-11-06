@@ -31,8 +31,8 @@ node{
     
     stage('MavenBuild'){
         def pom = readMavenPom file: 'pom.xml'
-        echo "\n\n\nBuilding project...\n\n\n"
-        echo "Project version: ${pom.version}"
+        echo "\n\n\nBuilding project..."
+        echo "Project version: ${pom.version}\n\n\n"
         try{
             sh "${mvn} package -DskipTests"
 
@@ -48,6 +48,7 @@ node{
     }
 
     stage('DockerPush'){
+        def pom = readMavenPom file: 'pom.xml'
         sh "docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}"
         sh "docker push ${env.REGISTRY}/k8s-hello:${pom.version}"
     }
