@@ -1,7 +1,7 @@
 node{
     def maven = tool 'mvn-3.5.2'
     def mvn = "${maven}/bin/mvn"
-    def pom = readMavenPom file: 'pom.xml'
+    
     
     
     stage('Docker Info'){
@@ -13,7 +13,7 @@ node{
     stage('Maven Info'){
         echo "\n\n\nDisplay maven version\n\n\n"
         sh "${mvn} --version"   
-        echo "Project version: ${pom.version}"
+        
     }
     
     stage('pull and clean'){
@@ -30,7 +30,9 @@ node{
     }
     
     stage('MavenBuild'){
+        def pom = readMavenPom file: 'pom.xml'
         echo "\n\n\nBuilding project...\n\n\n"
+        echo "Project version: ${pom.version}"
         try{
             sh "${mvn} package -DskipTests"
 
