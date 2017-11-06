@@ -1,4 +1,4 @@
-node {
+node{
     def maven = tool 'mvn-3.5.2'
     def mvn = "${maven}/bin/mvn"
     
@@ -25,14 +25,22 @@ node {
         }
     }
     
-    stage('BUILD'){
-        echo "Building project..."
+    stage('MavenBuild'){
+        echo "\n\n\nBuilding project...\n\n\n"
         try{
-            sh "${mvn} install -DskipTests"
+            sh "${mvn} package -DskipTests"
 
         }catch(Exception error){
             
             throw error
         }
     }
+
+    stage('Docker build'){
+        echo "\n\n\nBuilding docker image\n\n\n"
+        sh "docker build --tag rafaelszp/k8s-hello ."
+    }
+    
+    
+
 }
