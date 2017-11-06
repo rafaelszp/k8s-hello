@@ -45,7 +45,7 @@ node{
 
     stage('DockerPush'){
         sh "docker tag rafaelszp/k8s-hello ${env.REGISTRY}/k8s-hello"
-        sh "docker tag rafaelszp/k8s-hello ${env.REGISTRY}/k8s-hello"
+        sh "docker push ${env.REGISTRY}/k8s-hello"
     }
     
     
