@@ -1,6 +1,7 @@
 node{
     def maven = tool 'mvn-3.5.2'
     def mvn = "${maven}/bin/mvn"
+    def pom = readMavenPom file: 'pom.xml'
     
     
     stage('Docker Info'){
@@ -11,7 +12,8 @@ node{
     
     stage('Maven Info'){
         echo "\n\n\nDisplay maven version\n\n\n"
-        sh "${mvn} --version"        
+        sh "${mvn} --version"   
+        echo "Project version: ${pom.version}"
     }
     
     stage('pull and clean'){
@@ -44,8 +46,8 @@ node{
     }
 
     stage('DockerPush'){
-        sh "docker tag rafaelszp/k8s-hello ${env.REGISTRY}/k8s-hello"
-        sh "docker push ${env.REGISTRY}/k8s-hello"
+        sh "docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}"
+        sh "docker push ${env.REGISTRY}/k8s-hello:${pom.version}"
     }
     
     
