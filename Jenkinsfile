@@ -2,9 +2,11 @@ node{
     def maven = tool 'mvn-3.5.2'
     def mvn = "${maven}/bin/mvn"
     
+    
     stage('Docker Info'){
         echo "\n\n\nDisplaying version\n\n\n"
         sh 'docker version'    
+        sh "echo '${env.REGISTRY}'"
     }
     
     stage('Maven Info'){
@@ -36,9 +38,14 @@ node{
         }
     }
 
-    stage('Docker build'){
+    stage('DockerBuild'){
         echo "\n\n\nBuilding docker image\n\n\n"
         sh "docker build --tag rafaelszp/k8s-hello ."
+    }
+
+    stage('DockerPush'){
+        sh "docker tag rafaelszp/k8s-hello ${env.REGISTRY}/k8s-hello"
+        sh "docker tag rafaelszp/k8s-hello ${env.REGISTRY}/k8s-hello"
     }
     
     
