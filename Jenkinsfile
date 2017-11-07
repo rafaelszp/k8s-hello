@@ -71,7 +71,7 @@ podTemplate(
                     def currentList=sh (returnStdout: true, script:"helm list k8s-hello |tail -n1")
                     sh """
                     echo 'Matching Chart.yaml version against project version'
-                    sed -i 's/version:.*\\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
+                    sed -i 's/version:.*\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
                     """
                     if( currentList!=null && currentList.length()>0){
                         sh "${helmUpgrade}"
