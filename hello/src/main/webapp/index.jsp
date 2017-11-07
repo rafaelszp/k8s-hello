@@ -13,5 +13,7 @@
 
       Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %>
 
+      <p>Now I'm being auto deployed by kubernetes</p>
+
   </body>
 </html>

@@ -1,6 +1,6 @@
 # Default values for k8s-hello.
 
-replicaCount: 1
+replicaCount: 2
 image:
   repository: 10.21.154.82:30400/k8s-hello
   tag: latest
