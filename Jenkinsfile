@@ -1,59 +1,82 @@
-node{
-    def maven = tool 'mvn-3.5.2'
-    def mvn = "${maven}/bin/mvn"
-    
-    
-    
-    stage('Docker Info'){
-        echo "\n\n\nDisplaying version\n\n\n"
-        sh 'docker version'    
-        sh "echo '${env.REGISTRY}'"
-    }
-    
-    stage('Maven Info'){
-        echo "\n\n\nDisplay maven version\n\n\n"
-        sh "${mvn} --version"   
-        
-    }
-    
-    stage('pull and clean'){
-        try{
-            echo "Downloading the project"
+podTemplate(
+  label: 'k8s-hello-pipeline', 
+  containers: [
+    containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:2.7.0', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'docker', image: 'docker:1.12.6', command: 'cat', ttyEnabled: true),
+  ],
+  volumes:[
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+    hostPathVolume(mountPath: '/root/.m2/repository', hostPath: '/dados/maven_repo'),
+  ],
+  envVars:[
+      envVar(key:'HELM_HOST',value:"tiller-deploy.kube-system.svc.cluster.local:44134")
+  ]
+) {
+
+    node('k8s-hello-pipeline') {
+
+        stage('Fetch from git'){
             git poll:true, branch: 'master', url: 'https://github.com/rafaelszp/k8s-hello.git'
-            sh "${mvn} clean"
-        }catch (Exception e){
-            //notifyFailure(e.getMessage())
-            echo e.getMessage()
-            throw e
-
         }
-    }
-    
-    stage('MavenBuild'){
+        
         def pom = readMavenPom file: 'pom.xml'
-        echo "\n\n\nBuilding project..."
-        echo "Project version: ${pom.version}\n\n\n"
-        try{
-            sh "${mvn} package -DskipTests"
+        echo "Jenkins Pipeline running this project version: ${pom.version}"
+        echo "$REGISTRY URL: ${env.REGISTRY}"
 
-        }catch(Exception error){
+        stage('Maven Stage') {
             
-            throw error
+            container('maven') {
+                stage('Maven Clean') {
+                    sh """
+                    mvn -B clean
+                    mvn package -DskipTests -Dverify=true
+                    """
+                }
+            }
+        }
+
+        stage("Docker Stage"){
+            container('docker'){
+                stage('Docker info'){
+                    sh """
+                    docker version
+                    echo ${env.REGISTRY}
+                    """
+                }
+                stage('Docker Build'){
+                    sh """
+                    echo 'Project version: ${pom.version}'
+                    docker build --tag rafaelszp/k8s-hello:${pom.version} .
+                    """
+                }
+                stage('Docker tag and push'){
+                    sh """
+                    echo 'REGISTRY URL: ${env.REGISTRY}'
+                    docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}
+                    docker push ${env.REGISTRY}/k8s-hello:${pom.version}
+                    docker push ${env.REGISTRY}/k8s-hello:latest
+                    """
+                }
+            }
+        }
+
+        stage('Deploying with helm') {
+
+            container('helm') {
+                stage('Helm List ') {
+                    def helmSet="--set image.repository=${env.REGISTRY}/k8s-hello --set image.tag=${pom.version}"
+                    def helmInstall = "helm install --name k8s-hello ${helmSet} ./charts/k8s-hello"
+                    def helmUpgrade = "helm upgrade ${helmSet} k8s-hello ./charts/k8s-hello"
+                    def currentList=sh (returnStdout: true, script:"helm list k8s-hello |tail -n1")
+                    
+                    if( currentList!=null && currentList.length()>0){
+                        sh "${helmUpgrade}"
+                    }else{
+                        sh "${helmInstall}"
+                    }
+                }
+            }
         }
     }
-
-    stage('DockerBuild'){
-        echo "\n\n\nBuilding docker image\n\n\n"
-        def pom = readMavenPom file: 'pom.xml'
-        sh "docker build --tag rafaelszp/k8s-hello:${pom.version} ."
-    }
-
-    stage('DockerPush'){
-        def pom = readMavenPom file: 'pom.xml'
-        sh "docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}"
-        sh "docker push ${env.REGISTRY}/k8s-hello:${pom.version}"
-    }
-    
-    
-
 }
