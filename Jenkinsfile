@@ -47,13 +47,14 @@ podTemplate(
                 stage('Docker Build'){
                     sh """
                     echo 'Project version: ${pom.version}'
-                    docker build --tag rafaelszp/k8s-hello:${pom.version} .
+                    docker build -t rafaelszp/k8s-hello:${pom.version} -t rafaelszp/k8s-hello:latest .
                     """
                 }
                 stage('Docker tag and push'){
                     sh """
                     echo 'REGISTRY URL: ${env.REGISTRY}'
                     docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}
+                    docker tag rafaelszp/k8s-hello:latest ${env.REGISTRY}/k8s-hello:latest
                     docker push ${env.REGISTRY}/k8s-hello:${pom.version}
                     docker push ${env.REGISTRY}/k8s-hello:latest
                     """
