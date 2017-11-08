@@ -72,9 +72,13 @@ podTemplate(
                     sh """
                     echo 'Matching Chart.yaml version against project version'
                     sed -i 's/version:.*\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
-                    echo 'Packaging'
-                    nohup helm package ./charts/k8s-hello && exit 0
+                    echo 'Packaging'                    
                     """
+                    try{
+                        sh "helm package ./charts/k8s-hello"
+                    }catch(Exception e){
+                        echo 'done'
+                    }
                 }
             }
 
