@@ -4,13 +4,15 @@ podTemplate(
     containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:2.7.0', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'docker', image: 'docker:1.12.6', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'curl', image: 'byrnedo/alpine-curl', command: 'cat', ttyEnabled: true),    
   ],
   volumes:[
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/root/.m2/repository', hostPath: '/dados/maven_repo'),
   ],
   envVars:[
-      envVar(key:'HELM_HOST',value:"tiller-deploy.kube-system.svc.cluster.local:44134")
+      envVar(key:'HELM_HOST',value:"tiller-deploy.kube-system.svc.cluster.local:44134"),
+      envVar(key:'HELMET_HOST',value:"helmet-helmet-chart.helmet.svc.cluster.local:1323")
   ]
 ) {
 
@@ -65,15 +67,31 @@ podTemplate(
         stage('Deploying with helm') {
 
             container('helm') {
+
+                stage('Helm Package'){
+                    sh """
+                    echo 'Matching Chart.yaml version against project version'
+                    sed -i 's/version:.*\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
+                    echo 'Packaging'
+                    helm package ./charts/k8s-hello
+                    curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/
+                    """
+                }
+            }
+
+            container('curl'){
+                stage('Helm POST'){
+                    sh "curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/"
+                }
+            }
+
+            container('helm'){
                 stage('Helm Install ') {
                     def helmSet="--set image.repository=${env.REGISTRY}/k8s-hello --set image.tag=${pom.version} --set service.type=NodePort"
                     def helmInstall = "helm install --name k8s-hello ${helmSet} ./charts/k8s-hello"
                     def helmUpgrade = "helm upgrade ${helmSet} k8s-hello ./charts/k8s-hello"
                     def currentList=sh (returnStdout: true, script:"helm list k8s-hello |tail -n1")
-                    sh """
-                    echo 'Matching Chart.yaml version against project version'
-                    sed -i 's/version:.*\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
-                    """
+                    
                     if( currentList!=null && currentList.length()>0){
                         sh "${helmUpgrade}"
                     }else{
