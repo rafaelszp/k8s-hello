@@ -10,10 +10,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.externalPort }}
-      targetPort: {{ .Values.service.internalPort }}
-      protocol: TCP
-      name: {{ .Values.service.name }}
+    - name: http
+      port: 8080
   selector:
     app: {{ .Release.Name }}-k8s-hello
     release: {{ .Release.Name }}

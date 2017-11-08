@@ -15,22 +15,35 @@ spec:
         app: {{ .Release.Name }}-k8s-hello
         release: {{ .Release.Name }}
     spec:
+      dnsPolicy: ClusterFirst
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: http_proxy
+              value: $(NODE_NAME):4140
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.internalPort }}
+            - name: {{ .Chart.Name }}
+              containerPort: 8080
           livenessProbe:
             httpGet:
               path: /
-              port: {{ .Values.service.internalPort }}
+              port: 8080
             initialDelaySeconds: 20
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /
-              port: {{ .Values.service.internalPort }}
+              port: 8080
             initialDelaySeconds: 20
           resources:
 {{ toYaml .Values.resources | indent 12 }}

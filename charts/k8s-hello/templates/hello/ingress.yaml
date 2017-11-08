@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: "linkerd"
+spec:
+  rules:
+  - host: k8s.hello
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}-k8s-hello
+          servicePort: http
