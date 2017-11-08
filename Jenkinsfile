@@ -74,7 +74,6 @@ podTemplate(
                     sed -i 's/version:.*\$/version: ${pom.version}/g' ./charts/k8s-hello/Chart.yaml
                     echo 'Packaging'
                     helm package ./charts/k8s-hello
-                    curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/
                     """
                 }
             }
