@@ -2,17 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>k8s-parent</artifactId>
+        <groupId>szp.rafael.k8s</groupId>
+        <version>1.1.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>szp.rafael.k8s</groupId>
-        <artifactId>k8s-parent</artifactId>
-        <version>1.1.0</version>
-        <relativePath>../</relativePath>
-    </parent>
-
-    <groupId>szp.rafael.k8s</groupId>
-    <artifactId>hello</artifactId>
+    <artifactId>clock</artifactId>
     <packaging>war</packaging>
 
     <properties>
@@ -36,7 +33,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>k8s-hello</finalName>
+        <finalName>clock-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>
@@ -69,15 +66,23 @@
         <!-- WildFly Swarm Fractions -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs-cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
             <artifactId>undertow</artifactId>
         </dependency>
 
-        <!--UNIREST-->
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.9</version>
-        </dependency>
     </dependencies>
+
+
 
 </project>

@@ -12,3 +12,7 @@ spec:
       - backend:
           serviceName: {{ .Release.Name }}-k8s-hello
           servicePort: http
+      - path: /clock-service
+        backend:
+          serviceName: {{ .Release.Name }}-clock-service
+          servicePort: http

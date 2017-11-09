@@ -49,7 +49,8 @@ podTemplate(
                 stage('Docker Build'){
                     sh """
                     echo 'Project version: ${pom.version}'
-                    docker build -t rafaelszp/k8s-hello:${pom.version} -t rafaelszp/k8s-hello:latest .
+                    docker build -t rafaelszp/k8s-hello:${pom.version} -t rafaelszp/k8s-hello:latest ./hello
+                    docker build -t rafaelszp/clock-service:${pom.version} -t rafaelszp/clock-service:latest ./clock
                     """
                 }
                 stage('Docker tag and push'){
@@ -57,8 +58,12 @@ podTemplate(
                     echo 'REGISTRY URL: ${env.REGISTRY}'
                     docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}
                     docker tag rafaelszp/k8s-hello:latest ${env.REGISTRY}/k8s-hello:latest
+                    docker tag rafaelszp/clock-service:${pom.version} ${env.REGISTRY}/clock-service:${pom.version}
+                    docker tag rafaelszp/clock-service:latest ${env.REGISTRY}/clock-service:latest
                     docker push ${env.REGISTRY}/k8s-hello:${pom.version}
                     docker push ${env.REGISTRY}/k8s-hello:latest
+                    docker push ${env.REGISTRY}/clock-service:${pom.version}
+                    docker push ${env.REGISTRY}/clock-service:latest
                     """
                 }
             }
