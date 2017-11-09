@@ -14,7 +14,7 @@
     if(node==null||node.trim().length()==0){
       node = "http://localhost:9090";
     }else{
-      node = "http://"+node+":4140";
+      node = "http://"+node+":80";
     }
     String clockURL = node+"/clock-service/api/clock";
     HttpResponse<String> resp = Unirest.get(clockURL).asString();

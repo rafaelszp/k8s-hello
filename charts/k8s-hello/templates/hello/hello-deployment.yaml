@@ -21,15 +21,13 @@ spec:
           image: "{{ .Values.hello.image.repository }}:{{ .Values.hello.image.tag }}"
           env:
             - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
+              value: "{{ .Values.linkerd.service.name }}.{{ .Values.linkerd.service.namespace }}.svc.cluster.local"
             - name: POD_IP
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-            - name: http_proxy
-              value: $(NODE_NAME):4140
+#            - name: http_proxy
+#              value: $(NODE_NAME):4140
           imagePullPolicy: {{ .Values.hello.image.pullPolicy }}
           ports:
             - name: {{ .Chart.Name }}
