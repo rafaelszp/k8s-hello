@@ -95,7 +95,8 @@ podTemplate(
 
             container('helm'){
                 stage('Helm Install ') {
-                    def helmSet="--set image.repository=${env.REGISTRY}/k8s-hello --set image.tag=${pom.version} --set service.type=ClusterIP"
+                    def helmSet="--set hello.image.repository=${env.REGISTRY}/k8s-hello --set hello.image.tag=${pom.version} --set service.type=ClusterIP"
+                    helmSet=helmSet+" --set clock.image.repository=${env.REGISTRY}/clock-service --set clock.image.tag=${pom.version}"
                     def helmInstall = "helm install --name k8s-hello ${helmSet} ./charts/k8s-hello"
                     def helmUpgrade = "helm upgrade ${helmSet} k8s-hello ./charts/k8s-hello"
                     def currentList=sh (returnStdout: true, script:"helm list k8s-hello |tail -n1")

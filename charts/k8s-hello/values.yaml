@@ -8,7 +8,7 @@ hello:
     pullPolicy: IfNotPresent
 clock:
   image:
-      repository: 10.21.154.82:30400/k8s-hello
+      repository: 10.21.154.82:30400/clock-service
       tag: latest
       pullPolicy: IfNotPresent
 service:
