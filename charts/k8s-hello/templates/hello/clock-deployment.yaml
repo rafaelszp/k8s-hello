@@ -36,11 +36,11 @@ spec:
             httpGet:
               path: /clock-service/api/clock
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /clock-service/api/clock
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
 
