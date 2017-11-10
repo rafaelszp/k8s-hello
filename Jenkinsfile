@@ -87,12 +87,12 @@ podTemplate(
                     }
                 }
             }
-
-            container('curl'){
-                stage('Helm POST'){
-                    sh "curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/"
-                }
-            }
+//           Disabled because helmet gives wrong url
+//            container('curl'){
+//                stage('Helm POST'){
+//                    sh "curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/"
+//                }
+//            }
 
             container('helm'){
                 stage('Helm Install ') {
