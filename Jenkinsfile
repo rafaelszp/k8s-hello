@@ -1,5 +1,5 @@
 podTemplate(
-  label: 'k8s-hello-pipeline', 
+  label: 'k8s-hello-pipeline',
   nodeSelector: 'papel=master',
   containers: [
     containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
@@ -50,7 +50,8 @@ podTemplate(
                 stage('Docker Build'){
                     sh """
                     echo 'Project version: ${pom.version}'
-                    docker build -t rafaelszp/k8s-hello:${pom.version} -t rafaelszp/k8s-hello:latest .
+                    docker build -t rafaelszp/k8s-hello:${pom.version} -t rafaelszp/k8s-hello:latest ./hello
+                    docker build -t rafaelszp/clock-service:${pom.version} -t rafaelszp/clock-service:latest ./clock
                     """
                 }
                 stage('Docker tag and push'){
@@ -58,8 +59,12 @@ podTemplate(
                     echo 'REGISTRY URL: ${env.REGISTRY}'
                     docker tag rafaelszp/k8s-hello:${pom.version} ${env.REGISTRY}/k8s-hello:${pom.version}
                     docker tag rafaelszp/k8s-hello:latest ${env.REGISTRY}/k8s-hello:latest
+                    docker tag rafaelszp/clock-service:${pom.version} ${env.REGISTRY}/clock-service:${pom.version}
+                    docker tag rafaelszp/clock-service:latest ${env.REGISTRY}/clock-service:latest
                     docker push ${env.REGISTRY}/k8s-hello:${pom.version}
                     docker push ${env.REGISTRY}/k8s-hello:latest
+                    docker push ${env.REGISTRY}/clock-service:${pom.version}
+                    docker push ${env.REGISTRY}/clock-service:latest
                     """
                 }
             }
@@ -82,16 +87,17 @@ podTemplate(
                     }
                 }
             }
-
-            container('curl'){
-                stage('Helm POST'){
-                    sh "curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/"
-                }
-            }
+//           Disabled because helmet gives wrong url
+//            container('curl'){
+//                stage('Helm POST'){
+//                    sh "curl -v -T k8s-hello-${pom.version}.tgz -X PUT http://${env.HELMET_HOST}/upload/"
+//                }
+//            }
 
             container('helm'){
                 stage('Helm Install ') {
-                    def helmSet="--set image.repository=${env.REGISTRY}/k8s-hello --set image.tag=${pom.version} --set service.type=ClusterIP"
+                    def helmSet="--set hello.image.repository=${env.REGISTRY}/k8s-hello --set hello.image.tag=${pom.version} --set service.type=ClusterIP"
+                    helmSet=helmSet+" --set clock.image.repository=${env.REGISTRY}/clock-service --set clock.image.tag=${pom.version}"
                     def helmInstall = "helm install --name k8s-hello ${helmSet} ./charts/k8s-hello"
                     def helmUpgrade = "helm upgrade ${helmSet} k8s-hello ./charts/k8s-hello"
                     def currentList=sh (returnStdout: true, script:"helm list k8s-hello |tail -n1")
