@@ -9,10 +9,11 @@ spec:
   - host: k8s.hello
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
           serviceName: {{ .Release.Name }}-k8s-hello
           servicePort: http
-      - path: /clock-service
+      - path: /clock-service.*
         backend:
           serviceName: {{ .Release.Name }}-clock-service
           servicePort: http
