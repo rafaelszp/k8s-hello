@@ -1,5 +1,6 @@
 podTemplate(
   label: 'k8s-hello-pipeline', 
+  nodeSelector: 'papel=master'
   containers: [
     containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:2.7.0', command: 'cat', ttyEnabled: true),
