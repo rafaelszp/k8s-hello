@@ -10,4 +10,4 @@ spec:
     name: {{ .Release.Name }}-clock-service
   minReplicas: 2
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 20
