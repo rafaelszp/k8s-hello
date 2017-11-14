@@ -36,11 +36,17 @@ spec:
             httpGet:
               path: /clock-service/api/clock
               port: 8080
-            initialDelaySeconds: 30
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 3
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /clock-service/api/clock
               port: 8080
-            initialDelaySeconds: 30
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 3
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
 
