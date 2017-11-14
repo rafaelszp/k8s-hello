@@ -1,4 +1,4 @@
-FROM openjdk:8u151-jdk
+FROM openjdk:8-alpine
 ADD target/clock-service-swarm.jar /app/clock-service-swarm.jar
 #ADD target/clock-service-swarm.jar /deployments/clock-service-swarm.jar
 EXPOSE 8080
