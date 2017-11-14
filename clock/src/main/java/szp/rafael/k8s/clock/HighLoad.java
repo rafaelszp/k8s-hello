@@ -25,7 +25,7 @@ public class HighLoad extends HttpServlet{
 
   public void doSomeLoad()
   {
-	for (int i=0; i < 5; i++)
+	for (int i=0; i < 2; i++)
 	{
 	  new Thread(() -> {
 		System.out.println("Thread " +Thread.currentThread().getName() + " started");
