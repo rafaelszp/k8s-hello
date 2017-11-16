@@ -34,7 +34,7 @@ spec:
               containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /clock-service/api/clock
+              path: /clock-service/api/health
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 60
@@ -42,7 +42,7 @@ spec:
             periodSeconds: 3
           readinessProbe:
             httpGet:
-              path: /clock-service/api/clock
+              path: /clock-service/api/health
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 60
