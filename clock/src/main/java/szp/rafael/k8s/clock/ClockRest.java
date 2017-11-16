@@ -20,9 +20,10 @@ import java.util.Properties;
 public class ClockRest {
 
   public static short ENABLED=1;
+  public static short SLOW_REQUEST_ENABLED=0;
 
   @GET
-  public Response get(@Context HttpServletRequest req) throws UnknownHostException {
+  public Response get(@Context HttpServletRequest req) throws Exception {
     if(ENABLED==1){
       String version = "x.y.z";
 	  try {
@@ -37,8 +38,13 @@ public class ClockRest {
 	  String ip = Inet4Address.getLocalHost().getHostAddress();
 	  LocalDateTime now = LocalDateTime.now();
 	  String info = "Clock v"+version+" from "+ip+". Current date and time is "+now;
+	  if(SLOW_REQUEST_ENABLED==1){
+  		//Pause for 8mins
+  		Thread.sleep(8*60_000);
+  	  }
 	  return Response.ok(info).build();
 	}
+	
 	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("ENABLED",ENABLED).build();
   }
 
@@ -47,6 +53,13 @@ public class ClockRest {
   public Response enableDisable(@PathParam("enable")Integer enable){
     ENABLED=enable.shortValue();
     return Response.ok().build();
+  }
+
+  @GET
+  @Path("/slowrequest/enable/{enable:[0-1]}")
+  public Response enableDisableLongRequest(@PathParam("enable")Integer enable){
+  	SLOW_REQUEST_ENABLED=enable.shortValue();
+  	return Response.ok().build();	
   }
 
 }

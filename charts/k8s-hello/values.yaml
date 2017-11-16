@@ -1,16 +1,17 @@
 # Default values for k8s-hello.
 
-replicaCount: 2
 hello:
   image:
     repository: 10.21.154.82:30400/k8s-hello
     tag: latest
     pullPolicy: IfNotPresent
+  replicaCount: 1
 clock:
   image:
       repository: 10.21.154.82:30400/clock-service
       tag: latest
       pullPolicy: IfNotPresent
+  replicaCount: 3
 service:
   name: k8s-hello
   type: ClusterIP
