@@ -14,5 +14,9 @@
       <module>clock</module>
   </modules>
 
+  <scm>
+    <url>git@github.com:rafaelszp/k8s-hello.git</url>
+  </scm>
+
 
 </project>
