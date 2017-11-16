@@ -7,7 +7,7 @@
   Time: 10:32 AM
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<p>Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %>:<%=Inet4Address.getLocalHost().getHostAddress()%></p>
+<p>Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %> : <%=Inet4Address.getLocalHost().getHostAddress()%></p>
 <p>
 <%
     String node = System.getenv("NODE_NAME");
