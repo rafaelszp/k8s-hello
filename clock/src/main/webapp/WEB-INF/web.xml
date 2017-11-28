@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1" id="clock-service">
+
+
+    <!--MUST BE THE FIRST FILTER DECLARED-->
+    <filter>
+        <filter-name>hazelcast-filter</filter-name>
+        <filter-class>com.hazelcast.web.WebFilter</filter-class>
+
+        <init-param>
+            <param-name>map-name</param-name>
+            <param-value>clock-service-session</param-value>
+        </init-param>
+        <init-param>
+            <param-name>sticky-session</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cookie-name</param-name>
+            <param-value>hazelcast.sessionId</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cookie-max-age</param-name>
+            <param-value>1800</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>hazelcast-filter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>com.hazelcast.web.SessionListener</listener-class>
+    </listener>
+
+</web-app>
+

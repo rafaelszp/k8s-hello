@@ -5,7 +5,7 @@
     <parent>
         <artifactId>k8s-parent</artifactId>
         <groupId>szp.rafael.k8s</groupId>
-        <version>1.1.6</version>
+        <version>1.1.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,6 +26,7 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.version>${parent.version}</project.version>
+        <hazelcast.version>3.8.3</hazelcast.version>
     </properties>
 
     <dependencyManagement>
@@ -105,6 +106,18 @@
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>undertow</artifactId>
+        </dependency>
+
+        <!--hazelcast-->
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>${hazelcast.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-wm</artifactId>
+            <version>${hazelcast.version}</version>
         </dependency>
 
     </dependencies>

@@ -17,8 +17,10 @@
       node = "http://"+node+":80";
     }
     String clockURL = node+"/clock-service/api/clock";
+    String sessionInfoURL = node+"/clock-service/session-info";
     HttpResponse<String> resp = Unirest.get(clockURL).header("Host","k8s.hello").asString();
-    out.print(resp.getBody());
+    HttpResponse<String> resp2 = Unirest.get(sessionInfoURL).header("Host","k8s.hello").asString();
+    out.print(resp.getBody()+resp2.getBody());
 
 %>
 </p>
