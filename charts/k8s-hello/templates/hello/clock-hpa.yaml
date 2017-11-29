@@ -9,5 +9,5 @@ spec:
     kind: Deployment
     name: {{ .Release.Name }}-clock-service
   minReplicas: {{ .Values.clock.replicaCount }}
-  maxReplicas: 6
+  maxReplicas: 4
   targetCPUUtilizationPercentage: 20

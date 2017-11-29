@@ -1,6 +1,7 @@
 <%@ page import="java.net.Inet4Address" %>
 <%@ page import="com.mashape.unirest.http.Unirest" %>
-<%@ page import="com.mashape.unirest.http.HttpResponse" %><%--
+<%@ page import="com.mashape.unirest.http.HttpResponse" %>
+<%@ page import="szp.rafael.k8s.SessionInfo" %><%--
   Created by IntelliJ IDEA.
   User: rafael
   Date: 8/18/17
@@ -17,10 +18,13 @@
       node = "http://"+node+":80";
     }
     String clockURL = node+"/clock-service/api/clock";
-    String sessionInfoURL = node+"/clock-service/session-info";
+
     HttpResponse<String> resp = Unirest.get(clockURL).header("Host","k8s.hello").asString();
-    HttpResponse<String> resp2 = Unirest.get(sessionInfoURL).header("Host","k8s.hello").asString();
-    out.print(resp.getBody()+resp2.getBody());
+    out.print(resp.getBody());
+
+    SessionInfo.handleSession(session);
+    out.print(String.format("\n<p>requestCount: %s </p> \n<p>Session createdAt: %s</p>",
+            session.getAttribute("requestCount"),session.getAttribute("createdAt")));
 
 %>
 </p>

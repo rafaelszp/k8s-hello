@@ -1,4 +1,4 @@
-package szp.rafael.k8s.clock;
+package szp.rafael.k8s;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +16,13 @@ public class SessionInfo extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 	HttpSession session = request.getSession();
+	handleSession(session);
+	response.getWriter().write("<p>Session CreatedAt: "+session.getAttribute("createdAt"));
+	response.getWriter().write("<p>Session requestCount: "+session.getAttribute("requestCount"));
+
+  }
+
+  public static void handleSession(HttpSession session){
 	if(session.getAttribute("requestCount")==null){
 	  session.setAttribute("createdAt",LocalDateTime.now());
 	  session.setAttribute("requestCount",1L);
@@ -24,8 +31,5 @@ public class SessionInfo extends HttpServlet {
 	  ++requestCount;
 	  session.setAttribute("requestCount",requestCount);
 	}
-	response.getWriter().write("<p>Session CreatedAt: "+session.getAttribute("createdAt"));
-	response.getWriter().write("<p>Session requestCount: "+session.getAttribute("requestCount"));
-
   }
 }
