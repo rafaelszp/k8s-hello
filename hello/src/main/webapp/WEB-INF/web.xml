@@ -26,6 +26,10 @@
             <param-name>cookie-max-age</param-name>
             <param-value>1800</param-value>
         </init-param>
+        <init-param>
+            <param-name>shutdown-on-destroy</param-name>
+            <param-value>false</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>hazelcast-filter</filter-name>
