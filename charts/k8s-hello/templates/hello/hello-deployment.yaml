@@ -26,8 +26,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-#            - name: http_proxy
-#              value: $(NODE_NAME):4140
+            - name: JAVA_OPTS
+              value: "-Djava.awt.headless=true -Xms330m -Xmx730m -XX:MaxMetaspaceSize=200m"
           imagePullPolicy: {{ .Values.hello.image.pullPolicy }}
           ports:
             - name: {{ .Chart.Name }}
