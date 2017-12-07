@@ -1,21 +1,44 @@
 package szp.rafael.k8s.clock;
 
+import oshi.json.SystemInfo;
+import oshi.json.util.PropertiesUtil;
+import szp.rafael.k8s.status.Status;
+
+import javax.json.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+
 
 @Path("/health")
 public class Health {
 
   public static short WEAKEN=0;
 
+
   @GET
-  public Response get(){
+  public Response get() throws ExecutionException, InterruptedException {
     if(WEAKEN ==1){
       return Response.serverError().header("WEAKEN", WEAKEN).build();
     }
+
     return Response.ok().build();
+  }
+
+  @GET
+  @Path("/status")
+  @Produces(value = {MediaType.APPLICATION_JSON})
+  public Response status() throws ExecutionException, InterruptedException {
+    return Response.ok(Status.get().toString()).build();
   }
 
   @GET

@@ -5,13 +5,14 @@
   <groupId>szp.rafael.k8s</groupId>
   <artifactId>k8s-parent</artifactId>
   <name>k8s-parent</name>
-  <version>1.1.10</version>
+  <version>1.1.11</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>kube-deployer</module>
     <module>hello</module>
       <module>clock</module>
+      <module>status</module>
   </modules>
 
   <scm>
