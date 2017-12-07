@@ -98,7 +98,7 @@ public class Status {
 	String cmd="/usr/bin/uptime";
 	boolean waitForResult=true;
 
-	pb = new ProcessBuilder("/bin/bash", "-c", cmd);
+	pb = new ProcessBuilder("/bin/sh", "-c", cmd);
 	pb.redirectErrorStream(true);
 	Writer wtr = null;
 	try {
