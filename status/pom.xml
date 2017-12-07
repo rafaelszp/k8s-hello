@@ -5,7 +5,7 @@
     <parent>
         <artifactId>k8s-parent</artifactId>
         <groupId>szp.rafael.k8s</groupId>
-        <version>1.1.11</version>
+        <version>1.1.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,17 +44,17 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.oshi</groupId>
-            <artifactId>oshi-core</artifactId>
-            <version>${oshi.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.oshi</groupId>-->
+            <!--<artifactId>oshi-core</artifactId>-->
+            <!--<version>${oshi.version}</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>com.github.oshi</groupId>
-            <artifactId>oshi-json</artifactId>
-            <version>${oshi.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.oshi</groupId>-->
+            <!--<artifactId>oshi-json</artifactId>-->
+            <!--<version>${oshi.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 </project>

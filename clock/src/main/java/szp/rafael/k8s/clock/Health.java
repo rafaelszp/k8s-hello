@@ -1,21 +1,13 @@
 package szp.rafael.k8s.clock;
 
-import oshi.json.SystemInfo;
-import oshi.json.util.PropertiesUtil;
 import szp.rafael.k8s.status.Status;
 
-import javax.json.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 
