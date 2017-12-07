@@ -63,7 +63,7 @@ public class Status {
 //	Properties props = PropertiesUtil.loadProperties("oshi.json.properties");
 	JsonObjectBuilder status = Json.createObjectBuilder()
 			.add("operatingSystem", Json.createObjectBuilder()
-					.add("",sys.getName())
+					.add("name",sys.getName())
 					.add("arch",sys.getArch())
 					.add("version",sys.getVersion())
 					.add("lastLoadAverage",sys.getSystemLoadAverage())
