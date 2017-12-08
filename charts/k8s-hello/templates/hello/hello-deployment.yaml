@@ -27,7 +27,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: JAVA_OPTS
-              value: "-Djava.awt.headless=true -Xms40m -Xmx150m -XX:MaxMetaspaceSize=120m"
+              value: {{ .Values.javaOpts }}
           imagePullPolicy: {{ .Values.hello.image.pullPolicy }}
           ports:
             - name: {{ .Chart.Name }}

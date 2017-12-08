@@ -9,5 +9,5 @@ spec:
     kind: Deployment
     name: {{ .Release.Name }}-k8s-hello
   minReplicas: {{ .Values.hello.replicaCount }}
-  maxReplicas: 4
+  maxReplicas: 6
   targetCPUUtilizationPercentage: 80
