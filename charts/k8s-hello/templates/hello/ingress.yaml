@@ -9,7 +9,7 @@ spec:
   - host: k8s.hello
     http:
       paths:
-      - path: /hello
+      - path: /hello.*
         backend:
           serviceName: {{ .Release.Name }}-k8s-hello
           servicePort: http
