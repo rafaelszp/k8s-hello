@@ -52,6 +52,7 @@
                     <properties>
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
                     </properties>
+                    <jvmArguments>${env.JAVA_OPTS}</jvmArguments>
                 </configuration>
                 <executions>
                     <execution>

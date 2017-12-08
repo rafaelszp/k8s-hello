@@ -6,16 +6,12 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Status {
 
-  public static final Pattern uptimePattern = Pattern
-//		  .compile("^.*\\s+load\\s+average:\\s+([\\d\\.]+),\\s+([\\d\\.]+),\\s+([\\d\\.]+)$");
-		  .compile("(.*?)(load\\saverage\\:\\s)(\\d+\\.\\d+)(\\,\\s)(\\d+\\.\\d+)(\\,\\s)(\\d+\\.\\d+)");
-
   public static JsonObject get(){
+
+	long memorySize = Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory();
 
 	OperatingSystemMXBean sys = ManagementFactory.getOperatingSystemMXBean();
 
@@ -69,6 +65,9 @@ public class Status {
 					.add("lastLoadAverage",sys.getSystemLoadAverage())
 					.add("loadAverage",getLoad(uptime()))
 					.add("availableProcessors",sys.getAvailableProcessors())
+					.add("currentMemory",memorySize)
+					.add("maxMemory", Runtime.getRuntime().maxMemory())
+					.add("freeMemory", Runtime.getRuntime().freeMemory())
 			)
 			.add("memoryPool", memoryPoolArray)
 			.add("garbageCollector",gcArray);
@@ -82,7 +81,8 @@ public class Status {
 
 	JsonArrayBuilder load = Json.createArrayBuilder();
 
-	String[] arr = uptimeCmdResult.replaceAll("^.*?load\\s+average\\:\\s+", "").replaceAll("\n", "").split(",");
+	String[] arr = uptimeCmdResult.replaceAll("^.*?load\\s+average\\:\\s+", "")
+			.replaceAll("\n", "").split(",");
 
 	if (arr.length>0) {
 	  double oneMinuteLoadAvg = Double.parseDouble(arr[0]);
@@ -109,12 +109,12 @@ public class Status {
 		if (stream != null) {
 		  wtr = new StringWriter();
 
-		  char[] crunchifyBuffer = new char[2048];
+		  char[] buff = new char[2048];
 		  try {
-			Reader crunchifyReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+			Reader rdr = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 			int count;
-			while ((count = crunchifyReader.read(crunchifyBuffer)) != -1) {
-			  wtr.write(crunchifyBuffer, 0, count);
+			while ((count = rdr.read(buff)) != -1) {
+			  wtr.write(buff, 0, count);
 			}
 		  } finally {
 			stream.close();
@@ -124,7 +124,7 @@ public class Status {
 		}
 	  }
 	} catch (Exception e) {
-	  System.err.println("Error Executing tcpdump command" + e);
+	  System.err.println("Error Executing uptime command" + e);
 	}
 	return wtr.toString();
   }

@@ -27,14 +27,14 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: JAVA_OPTS
-              value: "-Djava.awt.headless=true -Xms330m -Xmx730m -XX:MaxMetaspaceSize=200m"
+              value: "-Djava.awt.headless=true -Xms40m -Xmx150m -XX:MaxMetaspaceSize=120m"
           imagePullPolicy: {{ .Values.hello.image.pullPolicy }}
           ports:
             - name: {{ .Chart.Name }}
               containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /health
+              path: /hello/health
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 60
@@ -42,7 +42,7 @@ spec:
             periodSeconds: 15
           readinessProbe:
             httpGet:
-              path: /health
+              path: /hello/health
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 60
