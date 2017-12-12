@@ -3,13 +3,13 @@ hello:
   image:
     repository: 10.21.154.82:30400/k8s-hello
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   replicaCount: 2
 clock:
   image:
       repository: 10.21.154.82:30400/clock-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   replicaCount: 2
 javaOpts: "-Djava.awt.headless=true -Xms40m -Xmx128m -XX:MaxMetaspaceSize=128m"
 service:
