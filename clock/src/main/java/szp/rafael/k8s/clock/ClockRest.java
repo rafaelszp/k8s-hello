@@ -28,7 +28,6 @@ public class ClockRest {
       String version = "x.y.z";
 	  try {
 		InputStream file = ClockRest.class.getResourceAsStream("/app.properties");
-		System.out.println(file);
 		Properties props = new Properties();
 		props.load(file);
 		version = props.get("project.version").toString();

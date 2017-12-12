@@ -20,7 +20,7 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.clock.image.repository }}:{{ .Values.clock.image.tag }}"
           env:
-            - name: NODE_NAME
+            - name: LOOKUP_URL
               value: "{{ .Values.linkerd.service.name }}.{{ .Values.linkerd.service.namespace }}.svc.cluster.local"
             - name: POD_IP
               valueFrom:

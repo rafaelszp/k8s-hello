@@ -11,7 +11,7 @@
 <p>Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %> : <%=Inet4Address.getLocalHost().getHostAddress()%></p>
 <p>
 <%
-    String node = System.getenv("NODE_NAME");
+    String node = System.getenv("LOOKUP_URL");
     if(node==null||node.trim().length()==0){
       node = "http://localhost:9090";
     }else{
