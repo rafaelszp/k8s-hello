@@ -8,7 +8,7 @@ http://www.hazelcast.com/schema/config/hazelcast-config-3.8.xsd"
     <!-- only necessary prior Hazelcast 3.8 -->
         <property name="hazelcast.discovery.enabled">true</property>
     </properties>
-    
+
     <network>
         <join>
             <!-- deactivate normal discovery -->
@@ -37,7 +37,7 @@ http://www.hazelcast.com/schema/config/hazelcast-config-3.8.xsd"
         <statistics-enabled>true</statistics-enabled>
     </executor-service>
 
-    <map name="clock-service-session">
+    <map name="k8s-hello-session">
         <time-to-live-seconds>1800</time-to-live-seconds>
         <max-idle-seconds>1800</max-idle-seconds>
     </map>
