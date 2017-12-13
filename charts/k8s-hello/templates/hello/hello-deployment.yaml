@@ -16,6 +16,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       dnsPolicy: ClusterFirst
+      serviceAccountName: {{ .Release.Name }}-k8s-hello-sa
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.hello.image.repository }}:{{ .Values.hello.image.tag }}"
