@@ -28,3 +28,5 @@ resources:
   limits:
     cpu: 800m
     memory: 600Mi
+timezone:
+  path: /usr/share/zoneinfo/America/Sao_Paulo

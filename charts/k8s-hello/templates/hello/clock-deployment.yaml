@@ -19,7 +19,7 @@ spec:
       volumes:
         - name: timezone-config
           hostPath:
-             path: /usr/share/zoneinfo/America/Sao_Paulo
+             path: {{ .Values.timezone.path }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.clock.image.repository }}:{{ .Values.clock.image.tag }}"
