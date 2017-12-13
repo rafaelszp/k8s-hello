@@ -1,3 +1,13 @@
 swarm:
   context:
     path: /hello
+  logging:
+    pattern-formatters:
+      PATTERN:
+        pattern: "[${jboss.node.name}] %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"
+    console-handlers:
+      CONSOLE:
+        named-formatter: PATTERN
+    root-logger:
+      handlers:
+        - CONSOLE
