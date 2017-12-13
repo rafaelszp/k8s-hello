@@ -9,15 +9,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <p>Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %> : <%=Inet4Address.getLocalHost().getHostAddress()%></p>
+<p>Running from <%= System.getProperty("NODE_NAME","N/A") %> node and on <%=System.getProperty("POD_NAMESPACE","N/A") %> namespace</p>
 <p>
 <%
-    String node = System.getenv("LOOKUP_URL");
-    if(node==null||node.trim().length()==0){
-      node = "http://localhost:9090";
+    String linkerdURL = System.getenv("LOOKUP_URL");
+    if(linkerdURL ==null|| linkerdURL.trim().length()==0){
+      linkerdURL = "http://localhost:9090";
     }else{
-      node = "http://"+node+":80";
+      linkerdURL = "http://"+ linkerdURL +":80";
     }
-    String clockURL = node+"/clock-service/api/clock";
+    String clockURL = linkerdURL +"/clock-service/api/clock";
 
     HttpResponse<String> resp = Unirest.get(clockURL).header("Host","k8s.hello").asString();
     out.print(resp.getBody());
