@@ -16,6 +16,10 @@ spec:
         release: {{ .Release.Name }}
     spec:
       dnsPolicy: ClusterFirst
+      volumes:
+        - name: timezone-config
+          hostPath:
+             path: /usr/share/zoneinfo/America/Sao_Paulo
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.clock.image.repository }}:{{ .Values.clock.image.tag }}"
@@ -47,6 +51,9 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 60
             timeoutSeconds: 3
+          volumeMounts:
+            - name: timezone-config
+              mountPath: /etc/localtime
           resources:
 {{ toYaml .Values.resources | indent 12 }}
 

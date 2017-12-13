@@ -17,6 +17,10 @@ spec:
     spec:
       dnsPolicy: ClusterFirst
       serviceAccountName: {{ .Release.Name }}-k8s-hello-sa
+      volumes:
+        - name: timezone-config
+          hostPath:
+            path: /usr/share/zoneinfo/America/Sao_Paulo
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.hello.image.repository }}:{{ .Values.hello.image.tag }}"
@@ -57,6 +61,9 @@ spec:
             initialDelaySeconds: 60
             timeoutSeconds: 10
             periodSeconds: 15
+          volumeMounts:
+            - name: timezone-config
+              mountPath: /etc/localtime
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
