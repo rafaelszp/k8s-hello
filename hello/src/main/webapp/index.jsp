@@ -9,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <p>Hello k8s from <%= Inet4Address.getLocalHost().getHostName() %> : <%=Inet4Address.getLocalHost().getHostAddress()%></p>
-<p>Running from <%= System.getProperty("NODE_NAME","N/A") %> node and on <%=System.getProperty("POD_NAMESPACE","N/A") %> namespace</p>
+<p>Running from <%= System.getenv("NODE_NAME") %> node and on <%=System.getProperty("POD_NAMESPACE","N/A") %> namespace</p>
 <p>
 <%
     String linkerdURL = System.getenv("LOOKUP_URL");
