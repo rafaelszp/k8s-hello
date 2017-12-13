@@ -32,7 +32,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: JAVA_OPTS
-              value: {{ .Values.javaOpts }}
+              value: "{{ .Values.hello.javaOpts }} -DSERVICE_NAME=$SERVICE_NAME -DPOD_NAMESPACE=$POD_NAMESPACE"
             - name: SERVICE_NAME
               value: {{ .Release.Name }}-k8s-hello
             - name: POD_NAMESPACE

@@ -27,7 +27,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: JAVA_OPTS
-              value: {{ .Values.javaOpts }}
+              value: {{ .Values.clock.javaOpts }}
           imagePullPolicy: {{ .Values.clock.image.pullPolicy }}
           ports:
             - name: {{ .Chart.Name }}
