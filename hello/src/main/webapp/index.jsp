@@ -3,7 +3,7 @@
 <%@ page import="com.mashape.unirest.http.HttpResponse" %>
 <%@ page import="szp.rafael.k8s.SessionInfo" %><%--
   Created by IntelliJ IDEA.
-  User: rafael
+  User: rafael<github.com/rafaelszp>
   Date: 8/18/17
   Time: 10:32 AM
 --%>
