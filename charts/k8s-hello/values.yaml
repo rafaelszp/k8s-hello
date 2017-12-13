@@ -5,14 +5,14 @@ hello:
     tag: latest
     pullPolicy: Always
   replicaCount: 2
-  javaOpts: "-Djava.awt.headless=true -Xms40m -Xmx128m -XX:MaxMetaspaceSize=128m -Denvironment=kubernetes -Duser.timezone=Americas/Sao_Paulo -Duser.country=BR -Duser.language=pt -Duser.region=BR"
+  javaOpts: "-Djava.awt.headless=true -Xms40m -Xmx128m -XX:MaxMetaspaceSize=128m -Denvironment=kubernetes -Duser.timezone=America/Sao_Paulo -Duser.country=BR -Duser.language=pt -Duser.region=BR"
 clock:
   image:
       repository: 10.21.154.82:30400/clock-service
       tag: latest
       pullPolicy: Always
   replicaCount: 2
-  javaOpts: "-Djava.awt.headless=true -Xms40m -Xmx128m -XX:MaxMetaspaceSize=128m -Duser.timezone=Americas/Sao_Paulo -Duser.country=BR -Duser.language=pt -Duser.region=BR"
+  javaOpts: "-Djava.awt.headless=true -Xms40m -Xmx128m -XX:MaxMetaspaceSize=128m -Duser.timezone=America/Sao_Paulo -Duser.country=BR -Duser.language=pt -Duser.region=BR"
 service:
   name: k8s-hello
   type: ClusterIP
