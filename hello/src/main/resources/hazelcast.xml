@@ -9,28 +9,7 @@ http://www.hazelcast.com/schema/config/hazelcast-config-3.8.xsd"
         <property name="hazelcast.discovery.enabled">true</property>
     </properties>
 
-    <network>
-        <join>
-            <!-- deactivate normal discovery -->
-            <multicast enabled="false"/>
-            <tcp-ip enabled="false" />
-
-            <!-- activate the Kubernetes plugin -->
-            <discovery-strategies>
-                <discovery-strategy enabled="true"
-                                    class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
-
-                    <properties>
-                        <!-- configure discovery service API lookup -->
-                        <property name="service-name">${SERVICE_NAME}</property>
-                        <property name="service-label-name">app</property>
-                        <property name="service-label-value">${SERVICE_NAME}</property>
-                        <property name="namespace">${POD_NAMESPACE}</property>
-                    </properties>
-                </discovery-strategy>
-            </discovery-strategies>
-        </join>
-    </network>
+    <import resource="${environment}/network-config.xml"/>
 
     <executor-service>
         <!--<pool-size>500</pool-size>-->
